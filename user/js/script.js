@@ -16,7 +16,6 @@ const PyStrixToast = typeof Swal !== "undefined"
         showConfirmButton: false,
         timer: 2500,
         timerProgressBar: true,
-
         customClass: {
             popup: "pystrix-toast",
             title: "pystrix-toast-title"
@@ -25,23 +24,18 @@ const PyStrixToast = typeof Swal !== "undefined"
     : null;
 
 
-// Common notification
 function showToast(icon, message) {
-
     if (!PyStrixToast) {
-        console.error("SweetAlert2 unavailable:", message);
+        console.error(message);
         return;
     }
 
     PyStrixToast.fire({
-        icon: icon,
+        icon,
         title: message
     });
-
 }
 
-
-// Notification helpers
 function showSuccess(message) {
     showToast("success", message);
 }
@@ -59,35 +53,23 @@ function showWarning(message) {
 }
 
 
-// Confirmation dialog
 function showConfirmation(title, message) {
-
     if (typeof Swal === "undefined") {
-        console.error("SweetAlert2 unavailable.");
         return Promise.resolve({ isConfirmed: false });
     }
 
     return Swal.fire({
-        title: title,
+        title,
         text: message,
         icon: "question",
         showCancelButton: true,
         confirmButtonText: "Yes, continue",
         cancelButtonText: "Cancel",
         reverseButtons: true,
-
         customClass: {
             popup: "pystrix-modal"
         }
     });
-
-}
-
-
-if (typeof Swal !== "undefined") {
-    console.log("SweetAlert2 loaded successfully.");
-} else {
-    console.error("SweetAlert2 CDN failed to load.");
 }
 
 
@@ -100,29 +82,20 @@ const editorElement = document.getElementById("codeEditor");
 let editor = null;
 
 if (editorElement && typeof CodeMirror !== "undefined") {
-
     editor = CodeMirror.fromTextArea(editorElement, {
-
         mode: "python",
         theme: "material-darker",
-
         lineNumbers: true,
         styleActiveLine: true,
         lineWrapping: false,
-
         indentUnit: 4,
         tabSize: 4,
         indentWithTabs: false,
-
         autofocus: true,
         matchBrackets: true
-
     });
-
 } else {
-
     console.error("CodeMirror failed to initialize.");
-
 }
 
 
@@ -135,7 +108,6 @@ const closeWelcome = document.getElementById("closeWelcome");
 
 
 function hideWelcome() {
-
     if (!welcomeToast) return;
 
     welcomeToast.classList.add("hide");
@@ -143,17 +115,12 @@ function hideWelcome() {
     setTimeout(() => {
         welcomeToast.style.display = "none";
     }, 400);
-
 }
 
-
-// Manual close
 if (closeWelcome) {
     closeWelcome.addEventListener("click", hideWelcome);
 }
 
-
-// Automatically close after 4 seconds
 if (welcomeToast) {
     setTimeout(hideWelcome, 4000);
 }
@@ -167,31 +134,23 @@ const cursorPosition = document.getElementById("cursorPosition");
 
 
 function updateCursorPosition() {
-
     if (!editor || !cursorPosition) return;
 
     const cursor = editor.getCursor();
 
     cursorPosition.textContent =
         `Ln ${cursor.line + 1}, Col ${cursor.ch + 1}`;
-
 }
 
-
 if (editor) {
-
     editor.on("cursorActivity", updateCursorPosition);
-
     updateCursorPosition();
-
 }
 
 
 /* =============================================
    5. EDITOR APPEARANCE SETTINGS
    ============================================= */
-
-// DOM Elements
 
 const appearanceToggle =
     document.getElementById("appearanceToggle");
@@ -212,98 +171,65 @@ const resetAppearance =
     document.getElementById("resetAppearance");
 
 
-// Open / Close appearance menu
-
 if (appearanceToggle && appearanceMenu) {
-
     appearanceToggle.addEventListener("click", (event) => {
-
         event.stopPropagation();
-
         appearanceMenu.classList.toggle("show");
-
     });
 
-
-    // Close menu on outside click
-
     document.addEventListener("click", (event) => {
-
         if (
             !appearanceMenu.contains(event.target) &&
             !appearanceToggle.contains(event.target)
         ) {
-
             appearanceMenu.classList.remove("show");
-
         }
-
     });
-
 }
 
 
-/* Theme Rendering */
+/* =============================================
+   6. THEME RENDERING
+   ============================================= */
 
 function applyEditorTheme(theme, notify = true) {
-
     if (!editor) return;
 
     const isLight = theme === "light";
 
-    // Apply actual CodeMirror theme
     editor.setOption(
         "theme",
         isLight ? "default" : "material-darker"
     );
 
-    // Refresh editor
     editor.refresh();
 
-    console.log("Current editor theme:", theme);
-
     if (notify) {
-
         showSuccess(
             isLight
                 ? "Light theme activated!"
                 : "Dark theme activated!"
         );
-
     }
-
 }
 
 
-// Theme dropdown
 if (editorTheme && editor) {
-
     editorTheme.addEventListener("change", function () {
-
         applyEditorTheme(this.value);
-
     });
-
-}
-
-
-// Default theme
-if (editor) {
 
     editorTheme.value = "dark";
     applyEditorTheme("dark", false);
-
 }
 
 
-
-
-/* Font Size */
+/* =============================================
+   7. FONT SIZE
+   ============================================= */
 
 if (fontSize && editor) {
-
     fontSize.addEventListener("change", () => {
-
         const wrapper = editor.getWrapperElement();
 
         wrapper.style.fontSize = `${fontSize.value}px`;
@@ -311,9 +237,7 @@ if (fontSize && editor) {
         editor.refresh();
 
         showSuccess(`Font size changed to ${fontSize.value}px`);
-
     });
-
 }
 
 
@@ -322,11 +246,8 @@ if (fontSize && editor) {
    ============================================= */
 
 if (textStyle && editor) {
-
     textStyle.addEventListener("change", () => {
-
         const style = textStyle.value;
-
         const wrapper = editor.getWrapperElement();
 
         wrapper.style.fontWeight =
@@ -337,10 +258,8 @@ if (textStyle && editor) {
 
         editor.refresh();
 
-        showSuccess("Text style updated!");
-
+        showSuccess("Editor text style updated!");
     });
-
 }
 
 
@@ -349,296 +268,564 @@ if (textStyle && editor) {
    ============================================= */
 
 if (resetAppearance && editor) {
-
     resetAppearance.addEventListener("click", () => {
+        if (editorTheme) editorTheme.value = "dark";
+        if (fontSize) fontSize.value = "14";
+        if (textStyle) textStyle.value = "normal";
 
-        // Reset dropdowns
-        if (editorTheme) {
-            editorTheme.value = "dark";
-        }
-
-        if (fontSize) {
-            fontSize.value = "14";
-        }
-
-        if (textStyle) {
-            textStyle.value = "normal";
-        }
-
-
-        // Reset editor theme
         applyEditorTheme("dark", false);
 
-
-        // Reset font settings
         const wrapper = editor.getWrapperElement();
 
         wrapper.style.fontSize = "14px";
         wrapper.style.fontWeight = "400";
         wrapper.style.fontStyle = "normal";
 
-
         editor.refresh();
 
         showSuccess("Editor settings reset!");
-
     });
-
 }
 
 
 /* =============================================
-   10. OUTPUT ELEMENTS
+   10. TERMINAL ELEMENTS
    ============================================= */
 
 const runBtn = document.getElementById("runBtn");
+const stopExecutionBtn = document.getElementById("stopExecution");
 
 const outputText = document.getElementById("outputText");
+const outputPlaceholder = document.getElementById("outputPlaceholder");
+const outputStatus = document.getElementById("outputStatus");
 
-const outputPlaceholder =
-    document.getElementById("outputPlaceholder");
+const executionTime = document.getElementById("executionTime");
+const executionStatus = document.getElementById("executionStatus");
 
-const outputStatus =
-    document.getElementById("outputStatus");
+const terminal = document.getElementById("terminal");
+const terminalInputForm = document.getElementById("terminalInputForm");
+const terminalPrompt = document.getElementById("terminalPrompt");
+const terminalInput = document.getElementById("terminalInput");
 
-const executionTime =
-    document.getElementById("executionTime");
+const outputContent = document.getElementById("outputContent");
 
-const executionStatus =
-    document.getElementById("executionStatus");
+const API_BASE_URL = "http://127.0.0.1:5000";
+
+let activeSessionId = null;
+let terminalBuffer = "";
+let inputPending = false;
+let executionFinished = true;
+let inputSubmitting = false;
 
 
 /* =============================================
-   11. DISPLAY OUTPUT
+   11. TERMINAL DISPLAY
    ============================================= */
 
-function displayOutput(output, type = "normal") {
+function displayTerminal() {
+    if (outputPlaceholder) {
+        outputPlaceholder.style.display = "none";
+    }
 
-    if (!outputText || !outputPlaceholder) return;
+    if (terminal) {
+        terminal.style.display = "block";
+    }
 
-    outputPlaceholder.style.display = "none";
+    renderTerminal();
+}
 
-    outputText.style.display = "block";
 
-    outputText.textContent = output;
+function renderTerminal() {
+    if (!outputText || !terminalInputForm || !terminalPrompt) return;
 
-    outputText.style.color =
-        type === "error" ? "#f87171" : "#e5e7eb";
+    const hasPendingPrompt =
+        !executionFinished &&
+        terminalBuffer.length > 0 &&
+        !terminalBuffer.endsWith("\n");
 
+    if (hasPendingPrompt) {
+        const lastNewline = terminalBuffer.lastIndexOf("\n");
+
+        const completedOutput =
+            terminalBuffer.substring(0, lastNewline + 1);
+
+        const currentPrompt =
+            terminalBuffer.substring(lastNewline + 1);
+
+        outputText.textContent = completedOutput;
+        terminalPrompt.textContent = currentPrompt;
+
+        terminalInputForm.style.display = "flex";
+        inputPending = true;
+
+    } else {
+        outputText.textContent = terminalBuffer;
+
+        terminalInputForm.style.display = "none";
+        inputPending = false;
+    }
+
+    if (outputContent) {
+        outputContent.scrollTop = outputContent.scrollHeight;
+    }
 }
 
 
 /* =============================================
-   12. PYTHON CODE EXECUTION
+   12. MOBILE CODE / OUTPUT NAVIGATION
+   ============================================= */
+
+const workspace = document.querySelector(".workspace");
+
+const showEditorView =
+    document.getElementById("showEditorView");
+
+const showOutputView =
+    document.getElementById("showOutputView");
+
+
+function isMobileView() {
+    return window.matchMedia("(max-width: 768px)").matches;
+}
+
+
+function switchMobileView(view) {
+    if (!workspace) return;
+
+    const showOutput = view === "output";
+
+    workspace.classList.toggle("show-output", showOutput);
+
+    if (showEditorView) {
+        showEditorView.classList.toggle("active", !showOutput);
+
+        showEditorView.setAttribute(
+            "aria-selected",
+            String(!showOutput)
+        );
+    }
+
+    if (showOutputView) {
+        showOutputView.classList.toggle("active", showOutput);
+
+        showOutputView.setAttribute(
+            "aria-selected",
+            String(showOutput)
+        );
+    }
+
+    if (!showOutput && editor) {
+        requestAnimationFrame(() => editor.refresh());
+    }
+
+    if (showOutput && inputPending && terminalInput) {
+        requestAnimationFrame(() => terminalInput.focus());
+    }
+}
+
+
+if (showEditorView) {
+    showEditorView.addEventListener("click", () => {
+        switchMobileView("editor");
+    });
+}
+
+if (showOutputView) {
+    showOutputView.addEventListener("click", () => {
+        switchMobileView("output");
+    });
+}
+
+
+/* =============================================
+   13. EXECUTION UI HELPERS
+   ============================================= */
+
+function updateExecutionTime(milliseconds) {
+    if (!executionTime) return;
+
+    executionTime.innerHTML = `
+        <i class="fa-regular fa-clock"></i>
+        Execution Time: ${milliseconds ?? "--"} ms
+    `;
+}
+
+
+function updateExecutionStatus(success) {
+    if (!executionStatus) return;
+
+    executionStatus.innerHTML = success
+        ? `
+            <i class="fa-solid fa-circle-check"
+               style="color:#22c55e"></i>
+            Success
+        `
+        : `
+            <i class="fa-solid fa-circle-xmark"
+               style="color:#ef4444"></i>
+            Failed
+        `;
+}
+
+
+function setRunButtonRunning(running) {
+    if (runBtn) {
+        runBtn.disabled = running;
+
+        runBtn.innerHTML = running
+            ? `
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                Running
+            `
+            : `
+                <i class="fa-solid fa-play"></i>
+                Run
+            `;
+    }
+
+    if (stopExecutionBtn) {
+        stopExecutionBtn.style.display =
+            running ? "grid" : "none";
+    }
+}
+
+
+function resetTerminal() {
+    terminalBuffer = "";
+    inputPending = false;
+    inputSubmitting = false;
+    executionFinished = false;
+
+    if (terminalInput) {
+        terminalInput.value = "";
+        terminalInput.disabled = false;
+    }
+
+    if (outputText) {
+        outputText.textContent = "";
+    }
+
+    displayTerminal();
+}
+
+
+/* =============================================
+   14. LIVE OUTPUT POLLING
+   ============================================= */
+
+async function pollTerminalOutput(sessionId) {
+    while (activeSessionId === sessionId) {
+        try {
+            const response = await fetch(
+                `${API_BASE_URL}/api/output/${sessionId}`
+            );
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(
+                    result.message || "Unable to fetch program output."
+                );
+            }
+
+            if (result.output) {
+                terminalBuffer += result.output;
+                displayTerminal();
+            }
+
+            updateExecutionTime(result.execution_time);
+
+            if (result.finished) {
+                executionFinished = true;
+                inputPending = false;
+                activeSessionId = null;
+
+                if (terminalInputForm) {
+                    terminalInputForm.style.display = "none";
+                }
+
+                if (terminalInput) {
+                    terminalInput.disabled = true;
+                }
+
+                renderTerminal();
+                setRunButtonRunning(false);
+
+                const success = result.exit_code === 0;
+
+                if (outputStatus) {
+                    outputStatus.textContent =
+                        success ? "Completed" : "Failed";
+                }
+
+                updateExecutionStatus(success);
+
+                if (success) {
+                    showSuccess("Code executed successfully!");
+                } else {
+                    showError("Python execution failed!");
+                }
+
+                break;
+            }
+
+            if (inputPending && terminalInput && !inputSubmitting) {
+                if (document.activeElement !== terminalInput) {
+                    terminalInput.focus();
+                }
+            }
+
+            await new Promise(resolve => setTimeout(resolve, 100));
+
+        } catch (error) {
+            console.error("Terminal polling error:", error);
+
+            if (activeSessionId === sessionId) {
+                activeSessionId = null;
+                executionFinished = true;
+                inputPending = false;
+
+                terminalBuffer +=
+                    "\nTerminal connection error: " + error.message;
+
+                if (terminalInputForm) {
+                    terminalInputForm.style.display = "none";
+                }
+
+                displayTerminal();
+                setRunButtonRunning(false);
+
+                if (outputStatus) {
+                    outputStatus.textContent = "Connection Error";
+                }
+
+                updateExecutionStatus(false);
+                showError(error.message);
+            }
+
+            break;
+        }
+    }
+}
+
+
+/* =============================================
+   15. START PYTHON EXECUTION
    ============================================= */
 
 if (runBtn && editor) {
-
     runBtn.addEventListener("click", async () => {
-
         const code = editor.getValue();
 
-
-        // Empty code validation
         if (!code.trim()) {
-
             showWarning("Please write some Python code first.");
-
             return;
-
         }
 
+        if (activeSessionId) {
+            showWarning("A program is already running.");
+            return;
+        }
 
-        // Disable Run button
-        runBtn.disabled = true;
-
-        runBtn.innerHTML = `
-            <i class="fa-solid fa-spinner fa-spin"></i>
-            Running
-        `;
-
+        resetTerminal();
+        setRunButtonRunning(true);
 
         if (outputStatus) {
             outputStatus.textContent = "Running";
         }
 
         if (executionStatus) {
-
-            executionStatus.innerHTML = `
-                <i class="fa-solid fa-circle"></i>
-                Executing
-            `;
-
+            executionStatus.textContent = "Executing";
         }
 
-        if (outputPlaceholder) {
-            outputPlaceholder.style.display = "none";
+        updateExecutionTime("--");
+
+        if (isMobileView()) {
+            switchMobileView("output");
         }
-
-        if (outputText) {
-            outputText.style.display = "none";
-        }
-
-
-        const startTime = performance.now();
-
 
         try {
+            const response = await fetch(
+                `${API_BASE_URL}/api/start`,
+                {
+                    method: "POST",
 
-            /*
-             * Flask API
-             * POST /api/execute
-             *
-             * Request:
-             * { "code": "print('Hello')" }
-             *
-             * Expected response:
-             * { "output": "Hello" }
-             */
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
 
-
-            const response = await fetch("http://127.0.0.1:5000/api/execute", {
-
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-                    code: code
-                })
-
-            });
-
-
-            // Parse response safely
-            const responseText = await response.text();
-
-let result;
-
-try {
-    result = JSON.parse(responseText);
-} catch (error) {
-    console.error("Invalid server response:", responseText);
-
-    throw new Error(
-        "Invalid response from Flask. Check the API URL and backend."
-    );
-}
-
-
-            const endTime = performance.now();
-
-            const elapsedTime =
-                ((endTime - startTime) / 1000).toFixed(3);
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    result.error || "Code execution failed."
-                );
-
-            }
-
-
-            // Display program output
-            const programOutput =
-                result.output ?? result.stdout ?? "";
-
-            displayOutput(programOutput);
-
-
-            if (outputStatus) {
-                outputStatus.textContent = "Completed";
-            }
-
-
-            if (executionTime) {
-
-                executionTime.innerHTML = `
-                    <i class="fa-regular fa-clock"></i>
-                    Execution Time:
-                    ${result.execution_time ?? elapsedTime + "s"}
-                `;
-
-            }
-
-
-            if (executionStatus) {
-
-                executionStatus.innerHTML = `
-                    <i class="fa-solid fa-circle-check"
-                       style="color:#22c55e"></i>
-                    Success
-                `;
-
-            }
-
-
-            showSuccess("Code executed successfully!");
-
-        }
-
-
-        catch (error) {
-
-            displayOutput(
-                error.message || "Unable to connect to the server.",
-                "error"
+                    body: JSON.stringify({
+                        code: code
+                    })
+                }
             );
 
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(
+                    result.output ||
+                    result.message ||
+                    "Unable to start Python execution."
+                );
+            }
+
+            activeSessionId = result.session_id;
+
+            pollTerminalOutput(activeSessionId);
+
+        } catch (error) {
+            executionFinished = true;
+
+            terminalBuffer +=
+                "Execution error: " + error.message;
+
+            displayTerminal();
+            setRunButtonRunning(false);
 
             if (outputStatus) {
                 outputStatus.textContent = "Error";
             }
 
-
-            if (executionTime) {
-
-                executionTime.innerHTML = `
-                    <i class="fa-regular fa-clock"></i>
-                    Execution Time: --
-                `;
-
-            }
-
-
-            if (executionStatus) {
-
-                executionStatus.innerHTML = `
-                    <i class="fa-solid fa-circle-xmark"
-                       style="color:#ef4444"></i>
-                    Failed
-                `;
-
-            }
-
-
-            showError(error.message || "Code execution failed.");
-
+            updateExecutionStatus(false);
+            showError(error.message);
         }
-
-
-        finally {
-
-            runBtn.disabled = false;
-
-            runBtn.innerHTML = `
-                <i class="fa-solid fa-play"></i>
-                Run
-            `;
-
-        }
-
     });
-
 }
 
 
 /* =============================================
-   13. CLEAR OUTPUT
+   16. TERMINAL INPUT
+   ============================================= */
+
+if (terminalInputForm && terminalInput) {
+    terminalInputForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        if (
+            !activeSessionId ||
+            !inputPending ||
+            inputSubmitting
+        ) {
+            return;
+        }
+
+        const userInput = terminalInput.value;
+        const sessionId = activeSessionId;
+
+        inputSubmitting = true;
+        terminalInput.disabled = true;
+
+        try {
+            const response = await fetch(
+                `${API_BASE_URL}/api/input/${sessionId}`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        input: userInput
+                    })
+                }
+            );
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(
+                    result.message || "Unable to send input."
+                );
+            }
+
+            // Display the entered answer in the terminal.
+            terminalBuffer += userInput + "\n";
+
+            terminalInput.value = "";
+            inputPending = false;
+
+            renderTerminal();
+
+        } catch (error) {
+            showError(error.message);
+
+        } finally {
+            inputSubmitting = false;
+
+            if (activeSessionId && terminalInput) {
+                terminalInput.disabled = false;
+
+                if (inputPending) {
+                    terminalInput.focus();
+                }
+            }
+        }
+    });
+}
+
+
+/* =============================================
+   17. STOP EXECUTION
+   ============================================= */
+
+if (stopExecutionBtn) {
+    stopExecutionBtn.addEventListener("click", async () => {
+        if (!activeSessionId) return;
+
+        const sessionId = activeSessionId;
+
+        try {
+            const response = await fetch(
+                `${API_BASE_URL}/api/stop/${sessionId}`,
+                {
+                    method: "POST"
+                }
+            );
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(
+                    result.message || "Unable to stop execution."
+                );
+            }
+
+            terminalBuffer +=
+                "\n\nExecution stopped by user.\n";
+
+            executionFinished = true;
+            inputPending = false;
+            activeSessionId = null;
+
+            if (terminalInputForm) {
+                terminalInputForm.style.display = "none";
+            }
+
+            if (terminalInput) {
+                terminalInput.disabled = true;
+            }
+
+            renderTerminal();
+            setRunButtonRunning(false);
+
+            if (outputStatus) {
+                outputStatus.textContent = "Stopped";
+            }
+
+            updateExecutionStatus(false);
+            showInfo("Execution stopped.");
+
+        } catch (error) {
+            showError(error.message);
+        }
+    });
+}
+
+
+/* =============================================
+   18. CLEAR OUTPUT
    ============================================= */
 
 const clearOutputBtn =
@@ -646,57 +833,59 @@ const clearOutputBtn =
 
 
 if (clearOutputBtn) {
-
     clearOutputBtn.addEventListener("click", () => {
-
-        if (outputText) {
-
-            outputText.textContent = "";
-
-            outputText.style.display = "none";
-
+        if (activeSessionId) {
+            showWarning(
+                "Stop the running program before clearing output."
+            );
+            return;
         }
 
+        terminalBuffer = "";
+        inputPending = false;
+        executionFinished = true;
+
+        if (terminal) {
+            terminal.style.display = "none";
+        }
+
+        if (terminalInput) {
+            terminalInput.value = "";
+            terminalInput.disabled = false;
+        }
+
+        if (terminalInputForm) {
+            terminalInputForm.style.display = "none";
+        }
+
+        if (outputText) {
+            outputText.textContent = "";
+        }
 
         if (outputPlaceholder) {
             outputPlaceholder.style.display = "flex";
         }
 
-
         if (outputStatus) {
             outputStatus.textContent = "Ready";
         }
 
-
-        if (executionTime) {
-
-            executionTime.innerHTML = `
-                <i class="fa-regular fa-clock"></i>
-                Execution Time: --
-            `;
-
-        }
-
+        updateExecutionTime("--");
 
         if (executionStatus) {
-
             executionStatus.innerHTML = `
                 <i class="fa-solid fa-circle"></i>
                 Waiting
             `;
-
         }
 
-
         showInfo("Output cleared.");
-
     });
-
 }
 
 
 /* =============================================
-   14. COPY OUTPUT
+   19. COPY OUTPUT
    ============================================= */
 
 const copyOutputBtn =
@@ -704,105 +893,64 @@ const copyOutputBtn =
 
 
 if (copyOutputBtn) {
-
     copyOutputBtn.addEventListener("click", async () => {
-
-        if (!outputText || outputText.style.display === "none") {
-
+        if (!terminalBuffer) {
             showWarning("No output available to copy.");
-
             return;
-
         }
 
-
         try {
-
-            await navigator.clipboard.writeText(
-                outputText.textContent
-            );
+            await navigator.clipboard.writeText(terminalBuffer);
 
             showSuccess("Output copied successfully!");
 
-        }
-
-
-        catch (error) {
-
+        } catch (error) {
             showError("Unable to copy output.");
-
         }
-
     });
-
 }
 
 
 /* =============================================
-   15. SHARE CODE
+   20. SHARE CODE
    ============================================= */
 
 const shareBtn = document.getElementById("shareBtn");
 
 
 if (shareBtn && editor) {
-
     shareBtn.addEventListener("click", async () => {
-
         const code = editor.getValue();
 
-
         if (!code.trim()) {
-
             showWarning("Nothing to share!");
-
             return;
-
         }
 
-
         try {
-
             if (navigator.share) {
-
                 await navigator.share({
-
                     title: "PyStrix Code",
-
                     text: code
-
                 });
 
-            }
-
-            else {
-
+            } else {
                 await navigator.clipboard.writeText(code);
 
                 showSuccess("Code copied! Ready to share.");
-
             }
 
-        }
-
-
-        catch (error) {
-
+        } catch (error) {
             if (error.name !== "AbortError") {
-
                 showError("Unable to share code.");
-
             }
-
         }
-
     });
-
 }
 
 
 /* =============================================
-   16. VISUALIZE BUTTON
+   21. VISUALIZE BUTTON
    ============================================= */
 
 const visualizeBtn =
@@ -810,93 +958,69 @@ const visualizeBtn =
 
 
 if (visualizeBtn) {
-
     visualizeBtn.addEventListener("click", () => {
-
         showInfo("Code visualization is coming soon!");
-
     });
-
 }
 
 
 /* =============================================
-   17. AI ASSISTANT
+   22. AI ASSISTANT
    ============================================= */
 
 const aiBtn = document.getElementById("aiBtn");
 
 
 if (aiBtn) {
-
     aiBtn.addEventListener("click", () => {
-
         showInfo("AI Assistant is coming soon!");
-
     });
-
 }
 
 
 /* =============================================
-   18. DEBUGGING
+   23. DEBUGGING
    ============================================= */
 
 const debugBtn = document.getElementById("debugBtn");
 
 
 if (debugBtn) {
-
     debugBtn.addEventListener("click", () => {
-
         showInfo("Debugging tools are coming soon!");
-
     });
-
 }
 
 
 /* =============================================
-   19. SETTINGS BUTTONS
+   24. SETTINGS BUTTONS
    ============================================= */
 
 function openAppearanceSettings() {
-
     if (!appearanceMenu) return;
 
     appearanceMenu.classList.add("show");
-
 }
 
 
-const settingsBtn = document.getElementById("settingsBtn");
+const settingsBtn =
+    document.getElementById("settingsBtn");
 
 const editorSettingsBtn =
     document.getElementById("editorSettingsBtn");
 
 
 if (settingsBtn) {
-
-    settingsBtn.addEventListener(
-        "click",
-        openAppearanceSettings
-    );
-
+    settingsBtn.addEventListener("click", openAppearanceSettings);
 }
 
-
 if (editorSettingsBtn) {
-
-    editorSettingsBtn.addEventListener(
-        "click",
-        openAppearanceSettings
-    );
-
+    editorSettingsBtn.addEventListener("click", openAppearanceSettings);
 }
 
 
 /* =============================================
-   20. RESIZABLE EDITOR AND OUTPUT
+   25. RESIZABLE EDITOR AND OUTPUT
    ============================================= */
 
 const resizer = document.getElementById("resizer");
@@ -905,31 +1029,23 @@ const editorPanel = document.getElementById("editorPanel");
 
 const outputPanel = document.getElementById("outputPanel");
 
-const workspace = document.querySelector(".workspace");
-
-
 let isResizing = false;
 
 
 if (resizer && editorPanel && outputPanel && workspace) {
-
     resizer.addEventListener("pointerdown", (event) => {
-
-        if (window.innerWidth <= 768) return;
+        if (isMobileView()) return;
 
         isResizing = true;
 
         resizer.classList.add("dragging");
 
         resizer.setPointerCapture(event.pointerId);
-
     });
 
 
     resizer.addEventListener("pointermove", (event) => {
-
         if (!isResizing) return;
-
 
         const workspaceRect = workspace.getBoundingClientRect();
 
@@ -938,31 +1054,24 @@ if (resizer && editorPanel && outputPanel && workspace) {
             resizer.offsetWidth -
             editorPanel.offsetLeft;
 
-
         const newWidth =
             event.clientX -
             workspaceRect.left -
             editorPanel.offsetLeft;
 
-
         const percentage =
             (newWidth / availableWidth) * 100;
 
-
         if (percentage < 20 || percentage > 80) return;
 
-
         editorPanel.style.width = `${percentage}%`;
-
         editorPanel.style.flex = "none";
 
         outputPanel.style.flex = "1";
-
     });
 
 
     function stopResizing() {
-
         isResizing = false;
 
         resizer.classList.remove("dragging");
@@ -970,42 +1079,53 @@ if (resizer && editorPanel && outputPanel && workspace) {
         if (editor) {
             editor.refresh();
         }
-
     }
 
-
     resizer.addEventListener("pointerup", stopResizing);
-
     resizer.addEventListener("pointercancel", stopResizing);
-
 }
 
 
 /* =============================================
-   21. WINDOW RESIZE
+   26. WINDOW RESIZE
    ============================================= */
 
 window.addEventListener("resize", () => {
-
     if (editor) {
         editor.refresh();
     }
-
 });
 
 
 /* =============================================
-   22. INITIALIZATION COMPLETE
+   27. KEYBOARD SHORTCUT
+   ============================================= */
+
+if (editor) {
+    editor.setOption("extraKeys", {
+        "Ctrl-Enter": () => {
+            if (runBtn && !runBtn.disabled) {
+                runBtn.click();
+            }
+        },
+
+        "Cmd-Enter": () => {
+            if (runBtn && !runBtn.disabled) {
+                runBtn.click();
+            }
+        }
+    });
+}
+
+
+/* =============================================
+   28. INITIALIZATION COMPLETE
    ============================================= */
 
 console.log("PyStrix initialized successfully!");
 
 if (typeof Swal !== "undefined") {
-
     console.log("SweetAlert2 is ready!");
-
 } else {
-
     console.error("SweetAlert2 is not available.");
-
 }

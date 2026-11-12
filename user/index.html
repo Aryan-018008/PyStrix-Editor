@@ -18,7 +18,7 @@
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-    <!-- CodeMirror Editor -->
+    <!-- CodeMirror -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
 
@@ -36,6 +36,7 @@
 
     <!-- Welcome Popup -->
     <div class="welcome-toast" id="welcomeToast">
+
         <div class="welcome-icon">
             <i class="fa-solid fa-code"></i>
         </div>
@@ -48,6 +49,7 @@
         <button id="closeWelcome" aria-label="Close welcome message">
             <i class="fa-solid fa-xmark"></i>
         </button>
+
     </div>
 
 
@@ -58,31 +60,68 @@
         <header class="topbar">
 
             <a href="index.html" class="brand">
+
                 <span class="brand-icon">
                     <i class="fa-solid fa-code"></i>
                 </span>
 
                 <span class="brand-name">PyStrix</span>
+
             </a>
 
-            <span class="brand-tagline">CODE. COMPETE. CONQUER.</span>
+            <span class="brand-tagline">
+                CODE. COMPETE. CONQUER.
+            </span>
 
             <div class="header-actions">
+
                 <span class="language-indicator">
                     <i class="fa-brands fa-python"></i>
                     Python
                 </span>
 
-                <button class="icon-btn" id="shareBtn" title="Share code">
+                <button class="icon-btn"
+                        id="shareBtn"
+                        title="Share code">
                     <i class="fa-solid fa-share-nodes"></i>
                 </button>
 
-                <button class="icon-btn" id="settingsBtn" title="Settings">
+                <button class="icon-btn"
+                        id="settingsBtn"
+                        title="Settings">
                     <i class="fa-solid fa-ellipsis-vertical"></i>
                 </button>
+
             </div>
 
         </header>
+
+
+        <!-- Mobile View Switcher -->
+        <nav class="mobile-view-tabs"
+             aria-label="Workspace view">
+
+            <button type="button"
+                    class="mobile-view-tab active"
+                    id="showEditorView"
+                    aria-selected="true">
+
+                <i class="fa-solid fa-code"></i>
+                Code
+
+            </button>
+
+            <button type="button"
+                    class="mobile-view-tab"
+                    id="showOutputView"
+                    aria-selected="false">
+
+                <i class="fa-solid fa-terminal"></i>
+                Output
+
+            </button>
+
+        </nav>
 
 
         <!-- Workspace -->
@@ -91,33 +130,55 @@
             <!-- Sidebar -->
             <aside class="sidebar">
 
-                <button class="sidebar-btn active" title="Code Editor">
+                <button class="sidebar-btn active"
+                        title="Code Editor">
+
                     <i class="fa-solid fa-code"></i>
+
                 </button>
 
-                <button class="sidebar-btn" id="aiBtn" title="AI Assistant">
+                <button class="sidebar-btn"
+                        id="aiBtn"
+                        title="AI Assistant">
+
                     <i class="fa-solid fa-robot"></i>
+
                 </button>
 
-                <button class="sidebar-btn" id="debugBtn" title="Debugging">
+                <button class="sidebar-btn"
+                        id="debugBtn"
+                        title="Debugging">
+
                     <i class="fa-solid fa-bug"></i>
+
                 </button>
 
                 <div class="sidebar-divider"></div>
 
-                <a href="documentation.html" target="_blank" class="sidebar-btn"
+                <a href="documentation.html"
+                   target="_blank"
+                   class="sidebar-btn"
                    title="Documentation">
+
                     <i class="fa-solid fa-book-open"></i>
+
                 </a>
 
-                <a href="feedback.html" target="_blank" class="sidebar-btn"
+                <a href="feedback.html"
+                   target="_blank"
+                   class="sidebar-btn"
                    title="Feedback">
+
                     <i class="fa-regular fa-comment-dots"></i>
+
                 </a>
 
-                <button class="sidebar-btn sidebar-bottom" id="editorSettingsBtn"
+                <button class="sidebar-btn sidebar-bottom"
+                        id="editorSettingsBtn"
                         title="Editor Settings">
+
                     <i class="fa-solid fa-gear"></i>
+
                 </button>
 
             </aside>
@@ -130,54 +191,71 @@
                 <div class="editor-toolbar">
 
                     <div class="file-tab">
+
                         <i class="fa-brands fa-python"></i>
                         <span>main.py</span>
+
                     </div>
+
 
                     <div class="editor-controls">
 
                         <button class="toolbar-btn visualize-btn"
                                 id="visualizeBtn">
+
                             <i class="fa-solid fa-diagram-project"></i>
                             Visualize
+
                         </button>
+
 
                         <button class="run-btn" id="runBtn">
+
                             <i class="fa-solid fa-play"></i>
                             Run
+
                         </button>
 
-                        <!-- Editor Appearance -->
+
+                        <!-- Appearance Settings -->
                         <div class="appearance-controls">
 
                             <button class="toolbar-btn appearance-toggle"
                                     id="appearanceToggle"
                                     title="Customize editor text">
+
                                 <i class="fa-solid fa-font"></i>
                                 <i class="fa-solid fa-chevron-down"></i>
+
                             </button>
 
-                            <div class="appearance-menu" id="appearanceMenu">
 
-                                <label for="editorTheme">Editor Theme</label>
+                            <div class="appearance-menu"
+                                 id="appearanceMenu">
 
-                            <select id="editorTheme">
-                            <option value="dark" selected>Dark</option>
-                            <option value="light">Light</option>
-                            </select>
-
-                                <!-- <label for="textColor">
-                                    Text Colour
+                                <label for="editorTheme">
+                                    Editor Theme
                                 </label>
 
-                                <input type="color" id="textColor"
-                                       value="#d4d4d4"> -->
+                                <select id="editorTheme">
+
+                                    <option value="dark" selected>
+                                        Dark
+                                    </option>
+
+                                    <option value="light">
+                                        Light
+                                    </option>
+
+                                </select>
+
 
                                 <label for="fontSize">
                                     Text Size
                                 </label>
 
                                 <select id="fontSize">
+
                                     <option value="12">12 px</option>
                                     <option value="13">13 px</option>
                                     <option value="14" selected>14 px</option>
@@ -186,21 +264,29 @@
                                     <option value="18">18 px</option>
                                     <option value="20">20 px</option>
                                     <option value="22">22 px</option>
+
                                 </select>
+
 
                                 <label for="textStyle">
                                     Text Style
                                 </label>
 
                                 <select id="textStyle">
+
                                     <option value="normal">Regular</option>
                                     <option value="bold">Bold</option>
                                     <option value="italic">Italic</option>
                                     <option value="bold-italic">Bold Italic</option>
+
                                 </select>
 
-                                <button id="resetAppearance" class="reset-btn">
+
+                                <button id="resetAppearance"
+                                        class="reset-btn">
+
                                     Reset Appearance
+
                                 </button>
 
                             </div>
@@ -214,16 +300,11 @@
 
                 <!-- Code Editor -->
                 <div class="code-editor-container">
-                    <textarea id="codeEditor">
-# Online Python compiler (interpreter)
-# Write and run Python online using this editor.
 
-a = 68
-b = 34
-c = a*b + 3
+                    <textarea id="codeEditor"></textarea>
 
-print(c)</textarea>
                 </div>
+
 
                 <!-- Editor Footer -->
                 <div class="editor-footer">
@@ -233,7 +314,9 @@ print(c)</textarea>
                         Python 3
                     </span>
 
-                    <span id="cursorPosition">Ln 1, Col 1</span>
+                    <span id="cursorPosition">
+                        Ln 1, Col 1
+                    </span>
 
                 </div>
 
@@ -247,25 +330,43 @@ print(c)</textarea>
             <!-- Output Panel -->
             <section class="output-panel" id="outputPanel">
 
+                <!-- Output Toolbar -->
                 <div class="output-toolbar">
 
                     <div class="output-title">
+
                         <span>Output</span>
+
                         <span class="output-status" id="outputStatus">
                             Ready
                         </span>
+
                     </div>
+
 
                     <div class="output-actions">
 
-                        <button class="icon-btn" id="clearOutput"
+                        <button class="icon-btn"
+                                id="clearOutput"
                                 title="Clear output">
+
                             <i class="fa-solid fa-trash"></i>
+
                         </button>
 
-                        <button class="icon-btn" id="copyOutput"
+                        <button class="icon-btn"
+                                id="copyOutput"
                                 title="Copy output">
+
                             <i class="fa-regular fa-copy"></i>
+
+                        </button>
+
+                        <button class="icon-btn"
+                           id="stopExecution"
+                           title="Stop execution"
+                           style="display: none;">
+                          <i class="fa-solid fa-stop"></i>
                         </button>
 
                     </div>
@@ -273,29 +374,122 @@ print(c)</textarea>
                 </div>
 
 
-                <div class="output-content" id="outputContent">
+                <!-- Program Input -->
+                <!-- <details class="custom-input-panel"
+                         id="programInputPanel">
 
-                    <div class="output-placeholder" id="outputPlaceholder">
-                        <i class="fa-solid fa-terminal"></i>
-                        <p>Your program output will appear here.</p>
-                        <span>Click Run to execute your code.</span>
+                    <summary class="custom-input-summary">
+
+                        <span class="input-summary-title">
+
+                            <i class="fa-solid fa-keyboard"></i>
+
+                            Program Input
+
+                            <span class="input-optional-tag">
+                                Optional
+                            </span>
+
+                        </span>
+
+
+                        <span class="input-summary-hint">
+
+                            For programs using input()
+
+                            <i class="fa-solid fa-chevron-down"></i>
+
+                        </span>
+
+                    </summary>
+
+
+                    <div class="custom-input-body">
+
+                        <label for="customInput">
+
+                            Enter each response on a new line, in the same order
+                            as your program asks for it.
+
+                        </label>
+
+
+                        <textarea
+                            id="customInput"
+                            rows="3"
+                            placeholder="Example:&#10;Aryan&#10;21"
+                            spellcheck="false"
+                            autocomplete="off"
+                        ></textarea>
+
+
+                        <div class="input-help">
+
+                            <i class="fa-regular fa-lightbulb"></i>
+
+                            Leave this empty if your code does not use input().
+
+                        </div>
+
                     </div>
 
-                    <pre id="outputText"></pre>
-
-                </div>
+                </details> -->
 
 
+                <!-- Output Content -->
+                <!-- Interactive Terminal -->
+
+<div class="output-content" id="outputContent">
+
+    <div class="output-placeholder" id="outputPlaceholder">
+
+        <i class="fa-solid fa-terminal"></i>
+
+        <p>Your program output will appear here.</p>
+
+        <span>Click Run to execute your Python code.</span>
+
+    </div>
+
+    <div class="terminal" id="terminal" style="display: none;">
+
+        <pre id="outputText"></pre>
+
+        <form id="terminalInputForm"
+              class="terminal-input-line"
+              style="display: none;">
+
+            <span id="terminalPrompt"></span>
+
+            <input
+                type="text"
+                id="terminalInput"
+                autocomplete="off"
+                spellcheck="false"
+                aria-label="Python program input"
+            >
+
+        </form>
+
+    </div>
+
+</div>
+                <!-- Output Footer -->
                 <div class="output-footer">
 
                     <span id="executionTime">
+
                         <i class="fa-regular fa-clock"></i>
                         Execution Time: --
+
                     </span>
 
+
                     <span id="executionStatus">
+
                         <i class="fa-solid fa-circle"></i>
                         Waiting
+
                     </span>
 
                 </div>
@@ -309,8 +503,12 @@ print(c)</textarea>
 
     <!-- CodeMirror Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js"></script>
+
+    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Custom JavaScript -->
