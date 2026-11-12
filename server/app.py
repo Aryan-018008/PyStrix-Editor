@@ -10,6 +10,8 @@ def create_app():
 
     app = Flask(__name__)
     app.config.from_object(Config)
+    print("MAX EXECUTION TIME:", Config.MAX_EXECUTION_TIME)
+
 
     # Allow the local frontend to communicate with Flask.
     CORS(app, resources={
