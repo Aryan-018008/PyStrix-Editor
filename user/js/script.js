@@ -303,7 +303,7 @@ const terminalInput = document.getElementById("terminalInput");
 
 const outputContent = document.getElementById("outputContent");
 
-const API_BASE_URL = "https://pystrix-editor-018.onrender.com/";
+const API_BASE_URL = "https://pystrix-editor-018.onrender.com";
 
 let activeSessionId = null;
 let terminalBuffer = "";
