@@ -12,6 +12,15 @@ def create_app():
 
     app = Flask(__name__)
     app.config.from_object(Config)
+
+    CORS(
+    app,
+    origins=[
+        "https://pystrix-editor-008.onrender.com"
+    ],
+    methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type"]
+)
     init_db()
     print("MAX EXECUTION TIME:", Config.MAX_EXECUTION_TIME)
 
