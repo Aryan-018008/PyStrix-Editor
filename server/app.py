@@ -5,6 +5,7 @@ from flask_cors import CORS
 from config import Config
 from routes.execution import execution_bp
 from routes.feedback import feedback_bp
+from routes.ai import ai_bp
 from database.db import init_db
 
 
@@ -49,6 +50,10 @@ def create_app():
     feedback_bp,
     url_prefix="/api"
 )
+
+    app.register_blueprint(
+        ai_bp , url_prefix = "/api"
+    )
 
     @app.route("/")
     def home():

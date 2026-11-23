@@ -11,3 +11,6 @@ class Config:
     DEBUG = os.getenv("FLASK_DEBUG", "False").lower() == "true"
     MAX_CODE_SIZE = int(os.getenv("MAX_CODE_SIZE", 50000))
     MAX_EXECUTION_TIME = int(os.getenv("MAX_EXECUTION_TIME", 120))
+
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+    AI_MODEL = os.getenv("AI_MODEL","llama-3.3-70b-versatile")
