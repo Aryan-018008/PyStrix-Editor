@@ -147,18 +147,18 @@
 
                 </button>
 
-                <button class="sidebar-btn"
+                <!-- <button class="sidebar-btn"
                         id="debugBtn"
                         title="Debugging">
 
                     <i class="fa-solid fa-bug"></i>
 
-                </button>
+                </button> -->
 
                 <div class="sidebar-divider"></div>
 
                 <a href="documentation.html"
-                   target="_blank"
+                   
                    class="sidebar-btn"
                    title="Documentation">
 
@@ -167,7 +167,7 @@
                 </a>
 
                 <a href="feedback.html"
-                   target="_blank"
+                   
                    class="sidebar-btn"
                    title="Feedback">
 
@@ -497,6 +497,134 @@
                 </div>
 
             </section>
+
+            <!-- =============================================
+     PYSTRIX AI ASSISTANT PANEL
+     ============================================= -->
+
+<aside class="ai-panel" id="aiPanel">
+
+    <!-- AI Header -->
+    <div class="ai-panel-header">
+
+        <div class="ai-header-title">
+            <div class="ai-logo">
+                <i class="fa-solid fa-robot"></i>
+            </div>
+
+            <div>
+                <h3>PyStrix AI</h3>
+                <span>Python Coding Assistant</span>
+            </div>
+        </div>
+
+        <button class="icon-btn"
+                id="closeAiPanel"
+                title="Close AI Assistant">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+    </div>
+
+
+    <!-- AI Quick Actions -->
+    <div class="ai-quick-actions">
+
+        <button class="ai-action-btn" data-ai-mode="explain">
+            <i class="fa-solid fa-lightbulb"></i>
+            Explain Code
+        </button>
+
+        <button class="ai-action-btn" data-ai-mode="debug">
+            <i class="fa-solid fa-bug"></i>
+            Fix Error
+        </button>
+
+        <button class="ai-action-btn" data-ai-mode="fix">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            Fix Code
+        </button>
+
+    </div>
+
+
+    <!-- AI Conversation -->
+    <div class="ai-chat-container" id="aiChatContainer">
+
+        <div class="ai-welcome-message" id="aiWelcomeMessage">
+
+            <div class="ai-welcome-icon">
+                <i class="fa-solid fa-robot"></i>
+            </div>
+
+            <h3>Hey, I'm PyStrix AI!</h3>
+
+            <p>
+                I'm here to help you understand Python,
+                debug errors and improve your code.
+            </p>
+
+            <div class="ai-suggestions">
+
+                <button class="ai-suggestion"
+                        data-ai-question="Explain Python functions with a simple example.">
+                    <i class="fa-solid fa-code"></i>
+                    Explain Python functions
+                </button>
+
+                <button class="ai-suggestion"
+                        data-ai-question="How can I improve my Python coding logic?">
+                    <i class="fa-solid fa-brain"></i>
+                    Improve coding logic
+                </button>
+
+                <button class="ai-suggestion"
+                        data-ai-question="Give me a beginner-friendly Python programming challenge.">
+                    <i class="fa-solid fa-puzzle-piece"></i>
+                    Give me a coding challenge
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- AI Input -->
+    <div class="ai-input-area">
+
+        <div class="ai-input-wrapper">
+
+            <textarea
+                id="aiInput"
+                rows="2"
+                placeholder="Ask anything about Python..."
+                spellcheck="false"
+            ></textarea>
+
+            <button id="sendAiMessage"
+                    title="Send message"
+                    aria-label="Send AI message">
+
+                <i class="fa-solid fa-arrow-up"></i>
+
+            </button>
+
+        </div>
+
+        <div class="ai-input-footer">
+            <span>
+                <i class="fa-solid fa-code"></i>
+                Code-aware assistant
+            </span>
+
+            <span>PyStrix AI</span>
+        </div>
+
+    </div>
+
+</aside>
 
         </main>
 

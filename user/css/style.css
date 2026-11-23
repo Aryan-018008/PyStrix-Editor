@@ -1467,3 +1467,520 @@ summary:focus-visible {
     }
 
 }
+
+/* =============================================
+   22. PYSTRIX AI ASSISTANT PANEL
+   ============================================= */
+
+.workspace {
+    position: relative;
+}
+
+/* AI Panel */
+
+.ai-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    width: 390px;
+    max-width: 90%;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #171c27;
+    border-left: 1px solid #3b4658;
+
+    z-index: 50;
+
+    transform: translateX(100%);
+    visibility: hidden;
+
+    transition:
+        transform 0.3s ease,
+        visibility 0.3s ease;
+
+    box-shadow: -12px 0 35px rgba(0, 0, 0, 0.25);
+}
+
+.workspace.ai-open .ai-panel {
+    transform: translateX(0);
+    visibility: visible;
+}
+
+
+/* Header */
+
+.ai-panel-header {
+    height: 65px;
+    min-height: 65px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 16px;
+
+    background: #222938;
+    border-bottom: 1px solid #374151;
+}
+
+.ai-header-title {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.ai-logo {
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: white;
+
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.ai-header-title h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 3px;
+}
+
+.ai-header-title span {
+    color: #9ca3af;
+    font-size: 10px;
+}
+
+
+/* Quick Actions */
+
+.ai-quick-actions {
+    display: flex;
+    gap: 7px;
+
+    padding: 12px;
+
+    border-bottom: 1px solid #343b49;
+}
+
+.ai-action-btn {
+    flex: 1;
+    min-width: 0;
+
+    padding: 9px 5px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+
+    background: #242c3a;
+    color: #cbd5e1;
+
+    border: 1px solid #3b4658;
+    border-radius: 8px;
+
+    font-size: 10px;
+
+    transition: 0.2s;
+}
+
+.ai-action-btn i {
+    font-size: 15px;
+    color: #60a5fa;
+}
+
+.ai-action-btn:hover {
+    background: #303d52;
+    border-color: #3b82f6;
+    color: white;
+}
+
+
+/* Chat */
+
+.ai-chat-container {
+    flex: 1;
+    min-height: 0;
+
+    overflow-y: auto;
+
+    padding: 18px 15px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.ai-welcome-message {
+    margin: auto 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+    gap: 12px;
+
+    padding: 20px 5px;
+}
+
+.ai-welcome-icon {
+    width: 55px;
+    height: 55px;
+
+    display: grid;
+    place-items: center;
+
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    border-radius: 16px;
+
+    color: white;
+    font-size: 22px;
+
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.2);
+}
+
+.ai-welcome-message h3 {
+    font-size: 16px;
+}
+
+.ai-welcome-message p {
+    max-width: 270px;
+
+    color: #9ca3af;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+
+/* Suggested Prompts */
+
+.ai-suggestions {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    margin-top: 8px;
+}
+
+.ai-suggestion {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 12px;
+
+    background: #222938;
+    color: #cbd5e1;
+
+    border: 1px solid #374151;
+    border-radius: 8px;
+
+    text-align: left;
+    font-size: 11px;
+
+    transition: 0.2s;
+}
+
+.ai-suggestion i {
+    color: #60a5fa;
+    width: 16px;
+}
+
+.ai-suggestion:hover {
+    background: #2b3547;
+    border-color: #3b82f6;
+}
+
+
+/* Input */
+
+.ai-input-area {
+    padding: 13px;
+
+    background: #202633;
+    border-top: 1px solid #374151;
+}
+
+.ai-input-wrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 9px;
+
+    padding: 10px;
+
+    background: #171c27;
+
+    border: 1px solid #414b60;
+    border-radius: 11px;
+
+    transition: border-color 0.2s;
+}
+
+.ai-input-wrapper:focus-within {
+    border-color: #3b82f6;
+}
+
+.ai-input-wrapper textarea {
+    flex: 1;
+    min-width: 0;
+
+    resize: none;
+    max-height: 130px;
+
+    padding: 5px;
+
+    background: transparent;
+    color: #f1f5f9;
+
+    border: none;
+    outline: none;
+
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.ai-input-wrapper textarea::placeholder {
+    color: #778195;
+}
+
+.ai-input-wrapper button {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    background: #2563eb;
+    color: white;
+
+    border: none;
+    border-radius: 8px;
+
+    transition: 0.2s;
+}
+
+.ai-input-wrapper button:hover {
+    background: #1d4ed8;
+}
+
+.ai-input-wrapper button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+/* Input Footer */
+
+.ai-input-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 10px;
+
+    color: #788397;
+    font-size: 9px;
+}
+
+.ai-input-footer i {
+    margin-right: 5px;
+    color: #60a5fa;
+}
+
+
+/* AI Panel Scrollbar */
+
+.ai-chat-container::-webkit-scrollbar {
+    width: 5px;
+}
+
+.ai-chat-container::-webkit-scrollbar-thumb {
+    background: #414b60;
+    border-radius: 5px;
+}
+
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+    .ai-panel {
+        width: 100%;
+        max-width: 100%;
+        border-left: none;
+    }
+
+    .ai-panel-header {
+        height: 58px;
+        min-height: 58px;
+    }
+
+    .ai-quick-actions {
+        padding: 10px;
+    }
+
+    .ai-chat-container {
+        padding: 15px;
+    }
+
+    .ai-input-area {
+        padding: 10px;
+    }
+
+    .ai-input-wrapper textarea {
+        font-size: 16px;
+    }
+
+}
+
+
+/* =============================================
+   23. AI CHAT MESSAGES
+   ============================================= */
+
+.ai-message {
+    display: flex;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.ai-message.user {
+    justify-content: flex-end;
+}
+
+.ai-message.ai,
+.ai-message.loading,
+.ai-message.error {
+    justify-content: flex-start;
+}
+
+.ai-message-content {
+
+    max-width: 90%;
+
+    padding: 12px 14px;
+
+    border-radius: 12px;
+
+    font-size: 12px;
+    line-height: 1.7;
+
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.ai-message.user .ai-message-content {
+
+    background: #2563eb;
+    color: white;
+
+    border-bottom-right-radius: 4px;
+}
+
+.ai-message.ai .ai-message-content {
+
+    background: #222938;
+    color: #e2e8f0;
+
+    border: 1px solid #374151;
+
+    border-bottom-left-radius: 4px;
+}
+
+.ai-message.loading .ai-message-content {
+
+    background: #222938;
+    color: #60a5fa;
+
+    border: 1px solid #374151;
+
+    font-style: italic;
+}
+
+.ai-message.error .ai-message-content {
+
+    background: #3b2025;
+    color: #fca5a5;
+
+    border: 1px solid #7f333b;
+}
+
+
+/* AI chat responsiveness */
+
+@media (max-width: 768px) {
+
+    .ai-message-content {
+        max-width: 95%;
+        font-size: 13px;
+    }
+
+}
+
+
+
+/* =============================================
+   24. MOBILE SIDEBAR NAVIGATION FIX
+   ============================================= */
+
+@media (max-width: 768px) {
+
+    /* Keep sidebar visible on mobile */
+    .workspace .sidebar {
+        display: flex;
+
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+
+        width: 54px;
+        min-width: 54px;
+
+        z-index: 60;
+
+        background: var(--sidebar-bg, #202633);
+    }
+
+    /* Make workspace content leave space for sidebar */
+    .workspace:not(.ai-open) .editor-panel,
+    .workspace:not(.ai-open) .output-panel {
+        margin-left: 54px;
+        width: calc(100% - 54px);
+    }
+
+    /* AI panel positioning */
+    .workspace.ai-open .ai-panel {
+        left: 54px;
+        right: 0;
+        top: 0;
+        bottom: 0;
+
+        width: auto;
+        max-width: none;
+
+        border-left: 1px solid #3b4658;
+    }
+
+    /* When AI is open, keep the underlying editor layout stable */
+    .workspace.ai-open .editor-panel,
+    .workspace.ai-open .output-panel {
+        margin-left: 54px;
+        width: calc(100% - 54px);
+    }
+
+}

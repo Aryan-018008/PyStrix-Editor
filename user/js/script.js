@@ -303,7 +303,10 @@ const terminalInput = document.getElementById("terminalInput");
 
 const outputContent = document.getElementById("outputContent");
 
-const API_BASE_URL = "https://pystrix-editor-018.onrender.com";
+// const API_BASE_URL = "https://pystrix-editor-018.onrender.com";
+
+const API_BASE_URL = "http://127.0.0.1:5000";
+
 
 let activeSessionId = null;
 let terminalBuffer = "";
@@ -962,13 +965,38 @@ if (visualizeBtn) {
    22. AI ASSISTANT
    ============================================= */
 
+/* =============================================
+   22. AI ASSISTANT PANEL TOGGLE
+   ============================================= */
+
 const aiBtn = document.getElementById("aiBtn");
+const aiPanel = document.getElementById("aiPanel");
+const closeAiPanel = document.getElementById("closeAiPanel");
 
+if (aiBtn && aiPanel) {
 
-if (aiBtn) {
     aiBtn.addEventListener("click", () => {
-        showInfo("AI Assistant is coming soon!");
+
+        document.querySelector(".workspace").classList.toggle("ai-open");
+
+        aiBtn.classList.toggle("active");
+
     });
+
+}
+
+if (closeAiPanel && aiPanel) {
+
+    closeAiPanel.addEventListener("click", () => {
+
+        document.querySelector(".workspace").classList.remove("ai-open");
+
+        if (aiBtn) {
+            aiBtn.classList.remove("active");
+        }
+
+    });
+
 }
 
 
@@ -976,14 +1004,282 @@ if (aiBtn) {
    23. DEBUGGING
    ============================================= */
 
-const debugBtn = document.getElementById("debugBtn");
+
+/* =============================================
+   23. PYSTRIX AI CHAT CONNECTION
+   ============================================= */
+
+const aiChatContainer = document.getElementById("aiChatContainer");
+const aiInput = document.getElementById("aiInput");
+const sendAiMessage = document.getElementById("sendAiMessage");
+
+let currentAiMode = "ask";
+let aiIsLoading = false;
 
 
-if (debugBtn) {
-    debugBtn.addEventListener("click", () => {
-        showInfo("Debugging tools are coming soon!");
-    });
+// Add message to chat
+
+function addAiMessage(content, type = "ai") {
+
+    const messageDiv = document.createElement("div");
+
+    messageDiv.className = `ai-message ${type}`;
+
+    const messageContent = document.createElement("div");
+
+    messageContent.className = "ai-message-content";
+    messageContent.textContent = content;
+
+    messageDiv.appendChild(messageContent);
+
+    aiChatContainer.appendChild(messageDiv);
+
+    aiChatContainer.scrollTop = aiChatContainer.scrollHeight;
+
+    return messageDiv;
 }
+
+
+// Send message to backend
+
+
+async function sendMessageToAI(message, mode = "ask") {
+
+    if (!message.trim() || aiIsLoading) return;
+
+    aiIsLoading = true;
+    sendAiMessage.disabled = true;
+
+    const welcome = document.getElementById("aiWelcomeMessage");
+
+    if (welcome) {
+        welcome.remove();
+    }
+
+    addAiMessage(message, "user");
+
+    const loadingMessage = addAiMessage(
+        "PyStrix AI is thinking...",
+        "loading"
+    );
+
+    try {
+
+        const code = editor ? editor.getValue() : "";
+
+        const response = await fetch(`${API_BASE_URL}/api/ai`, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                message: message,
+                code: code,
+                error: "",
+                mode: mode
+            })
+
+        });
+
+        if (!response.ok) {
+
+            let errorMessage = "AI request failed.";
+
+            try {
+                const data = await response.json();
+                errorMessage = data.message || errorMessage;
+            } catch (_) {}
+
+            loadingMessage.remove();
+
+            addAiMessage(errorMessage, "error");
+
+            return;
+        }
+
+        if (!response.body) {
+            throw new Error("Streaming response is unavailable.");
+        }
+
+        loadingMessage.remove();
+
+        // Create the response bubble immediately
+        const aiMessage = addAiMessage("", "ai");
+        const contentElement = aiMessage.querySelector(".ai-message-content");
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+
+        let buffer = "";
+        let finished = false;
+
+        while (!finished) {
+
+            const { value, done } = await reader.read();
+
+            if (done) {
+                finished = true;
+                break;
+            }
+
+            buffer += decoder.decode(value, { stream: true });
+
+            const lines = buffer.split("\n");
+
+            buffer = lines.pop() || "";
+
+            for (const line of lines) {
+
+                if (!line.startsWith("data: ")) continue;
+
+                const payload = line.slice(6).trim();
+
+                if (payload === "[DONE]") {
+                    finished = true;
+                    break;
+                }
+
+                let parsed;
+
+                try {
+                    parsed = JSON.parse(payload);
+                } catch (_) {
+                    continue;
+                }
+
+                if (parsed.error) {
+
+                    contentElement.textContent +=
+                        "\n\n" + parsed.error;
+
+                    finished = true;
+                    break;
+                }
+
+                if (parsed.chunk) {
+
+                    contentElement.textContent += parsed.chunk;
+
+                    aiChatContainer.scrollTop =
+                        aiChatContainer.scrollHeight;
+
+                }
+
+            }
+
+        }
+
+        // Flush remaining decoder data
+        buffer += decoder.decode();
+
+        aiChatContainer.scrollTop =
+            aiChatContainer.scrollHeight;
+
+    } catch (error) {
+
+        console.error("PyStrix AI Streaming Error:", error);
+
+        loadingMessage.remove();
+
+        addAiMessage(
+            "Unable to connect to PyStrix AI. Please try again.",
+            "error"
+        );
+
+    } finally {
+
+        aiIsLoading = false;
+        sendAiMessage.disabled = false;
+
+        aiChatContainer.scrollTop =
+            aiChatContainer.scrollHeight;
+
+    }
+
+}
+
+
+
+// Send button
+
+if (sendAiMessage && aiInput) {
+
+    sendAiMessage.addEventListener("click", () => {
+
+        const message = aiInput.value.trim();
+
+        if (!message) return;
+
+        aiInput.value = "";
+
+        sendMessageToAI(message, currentAiMode);
+
+    });
+
+}
+
+
+// Enter to send, Shift+Enter for newline
+
+if (aiInput) {
+
+    aiInput.addEventListener("keydown", (event) => {
+
+        if (event.key === "Enter" && !event.shiftKey) {
+
+            event.preventDefault();
+
+            sendAiMessage.click();
+
+        }
+
+    });
+
+}
+
+
+// Quick actions
+
+document.querySelectorAll("[data-ai-mode]").forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        const mode = button.dataset.aiMode;
+
+        const prompts = {
+
+            explain: "Explain my current Python code step by step.",
+
+            debug: "Analyze my current Python code and help me identify and fix errors.",
+
+            fix: "Review my current Python code, identify problems and provide corrected code."
+
+        };
+
+        sendMessageToAI(prompts[mode], mode);
+
+    });
+
+});
+
+
+// Suggested prompts
+
+document.querySelectorAll("[data-ai-question]").forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        const question = button.dataset.aiQuestion;
+
+        sendMessageToAI(question, "ask");
+
+    });
+
+});
+
 
 
 /* =============================================
