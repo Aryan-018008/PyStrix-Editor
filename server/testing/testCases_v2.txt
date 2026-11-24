@@ -1,0 +1,172 @@
+PYSTRIX V2 - AI ASSISTANT TEST REPORT
+=====================================
+
+Project: PyStrix - Code. Compete. Conquer.
+Testing scope: Phase 4 - AI Assistant functional testing
+Date: 24 November 2026
+
+TEST SUMMARY
+-----------
+T1  - Ask Mode                         PASS
+T2  - Explain Code                      PASS
+T3  - Fix Error (traceback context)     PASS
+T4  - Fix Code                         PASS
+T5  - Streaming Reliability             PASS
+T6  - Empty Prompt Handling             PASS
+T7  - API / Network Failure Handling    PASS
+T8  - Long Code Handling               PASS
+T9  - Repeated Requests                 PASS
+T10 - Mobile AI Panel / Responsiveness  PARTIAL PASS (mobile editor improvement verified; AI-panel final check pending)
+
+
+TEST DETAILS
+------------
+
+T1 - ASK MODE
+Status: PASS
+Prompt tested:
+"What is a Python function? Explain it in 3 simple points with a small example."
+
+Observed:
+- AI returned a relevant explanation.
+- Explanation included simple points and a small example.
+
+
+T2 - EXPLAIN CODE
+Status: PASS
+Code tested:
+def calculate_total(price, quantity):
+    total = price * quantity
+    return total
+
+result = calculate_total(100, 3)
+print(result)
+
+Observed:
+- AI explained the function and its call.
+- It explained the calculation and result (300).
+
+
+T3 - FIX ERROR / TRACEBACK CONTEXT
+Status: PASS
+Code tested:
+def divide(a, b):
+    return a / b
+
+result = divide(10, 0)
+print(result)
+
+Observed:
+- Program generated a ZeroDivisionError.
+- AI correctly explained division by zero and proposed ways to handle it.
+- Traceback context was connected to the AI Debug/Fix Error request flow.
+
+
+T4 - FIX CODE
+Status: PASS
+Buggy code tested:
+def calculate_average(numbers):
+    total = 0
+    for num in numbers:
+        total = num
+    return total / len(numbers)
+
+marks = [80, 90, 100]
+print(calculate_average(marks))
+
+Observed:
+- AI identified the accumulator bug (total = num).
+- Suggested using total += num.
+- Also suggested handling an empty list.
+- Correct average for the test data: 90.0.
+
+
+T5 - STREAMING RELIABILITY
+Status: PASS
+Test:
+Requested a multi-topic explanation of Python lists, tuples, sets, and dictionaries with examples and comparisons.
+
+Observed:
+- Response streamed to completion.
+- User confirmed it was not truncated.
+- Markdown was displayed as raw text at this stage; formatting work is deferred to Phase 3D.
+
+
+T6 - EMPTY PROMPT HANDLING
+Status: PASS
+Test:
+Submitted an empty AI prompt.
+
+Observed:
+- Empty prompt was not sent.
+- No unwanted API request or error was observed.
+
+
+T7 - API / NETWORK FAILURE HANDLING
+Status: PASS
+Test:
+Stopped Flask backend intentionally and sent AI requests.
+
+Observed:
+- Frontend displayed the fallback message:
+  "Unable to connect to PyStrix AI. Please try again."
+- Repeat attempt while backend remained unavailable also displayed the expected fallback.
+
+
+T8 - LONG CODE HANDLING
+Status: PASS
+Test:
+Provided a longer Python program using a Student class, methods, a list of objects, and a loop. Asked AI to Explain Code.
+
+Observed:
+- AI explained the class, constructor, instance attributes, average calculation,
+  display method, list of objects, and iteration.
+- Response was appropriate for the longer code sample.
+
+
+T9 - REPEATED REQUESTS
+Status: PASS
+Test:
+Sent three consecutive requests without refreshing:
+1. What is a Python list?
+2. Explain list append() with an example.
+3. Give me a simple Python program using a list.
+
+Observed:
+- Repeated-request test was confirmed completed.
+
+
+T10 - MOBILE RESPONSIVENESS
+Status: PARTIAL PASS
+Test:
+Used Chrome DevTools mobile viewport (318 x 652) to inspect the editor layout.
+
+Observed before adjustment:
+- Sidebar and mobile Code/Output tabs were present.
+- Long code lines overflowed horizontally and were difficult to view.
+
+Adjustment:
+- CodeMirror option lineWrapping was changed from false to true.
+
+Observed after adjustment:
+- Long code lines wrapped within the editor.
+- Editor became more readable at the tested mobile viewport.
+- Sidebar and toolbar appeared aligned.
+- Mobile editor responsiveness improved.
+
+Pending:
+- Final mobile AI-panel test (open, send a message, read response, close panel, return to editor)
+  has not yet been confirmed.
+
+
+OVERALL RESULT
+--------------
+Tests T1-T9: PASS
+T10: PARTIAL PASS - mobile editor wrapping improvement verified; final AI-panel interaction pending.
+
+Phase 4 functional testing is substantially complete. The mobile AI-panel interaction remains to be confirmed.
+
+NEXT PLANNED WORK
+----------------
+- Complete the T10 AI-panel interaction test.
+- Proceed to Phase 3D: Markdown rendering, formatted code blocks, Copy Code, and Apply Code functionality, as planned.
