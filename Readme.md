@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <a href="https://pystrix-editor-008.onrender.com">Live Application</a> ·
+  <a href="https://pystrix-editor-008.onrender.com">Live</a> ·
   <a href="https://github.com/Aryan-018008/PyStrix-Editor">Source Code</a>
 </p>
 
@@ -75,15 +75,15 @@ PyStrix uses a frontend–backend architecture with independently deployed servi
 ┌─────────────────────────────────────┐
 │           Flask Backend             │
 │                                     │
-│ Python Execution · AI API            │
-│ Request Processing · CORS             │
+│ Python Execution · AI API           │
+│ Request Processing · CORS            │
 └──────────────────┬──────────────────┘
                    │
           ┌────────┴─────────┐
           ▼                  ▼
 ┌──────────────────┐ ┌──────────────────┐
-│ Python Execution │ │  Groq AI Service  │
-│     Service      │ │  AI Responses     │
+│ Python Execution │ │  Groq AI Service │
+│     Service      │ │  AI Responses    │
 └──────────────────┘ └──────────────────┘
 ```
 
@@ -109,26 +109,39 @@ PyStrix uses a frontend–backend architecture with independently deployed servi
 
 ### Deployment
 - **Render** — deployment and hosting
-- **GitHub** — source control and version management
+- **GitHub** — Version Control
 
 ---
 
 ## Project Structure
 
 ```text
-PyStrix-Editor/
+PyStrixx/
 │
 ├── user/                         # Frontend application
+│   ├── assets/neon PyStrix Python Emblem.png
+│   ├── css/style.css
+│   └── js/script.js
 │   ├── index.html
-│   ├── style.css
-│   └── script.js
+│   ├── documentation.html
+│   ├── feedback.html
 │
 ├── server/                       # Backend application
+│   ├── database/db.py
+│   ├── pystrix.db
+│   ├── routes/ai.py
+│   ├── routes/execution.py
+│   ├── routes/feedback.py
+│   ├── service/ai_service.py
+│   ├── service/execution_service.py
+│   ├── testing/testCases_v1.txt
+│   ├── testing/testCases_v2.txt
 │   ├── app.py
+│   └── config.py                       
 │   ├── requirements.txt
-│   └── ...                       # Backend modules and configuration
+│ 
 │
-└── README.md
+└── Readme.md
 ```
 
 > The structure above represents the primary project layout; supporting backend files may vary as the implementation evolves.
@@ -167,7 +180,7 @@ PyStrix-Editor/
 
 ```bash
 git clone https://github.com/Aryan-018008/PyStrix-Editor.git
-cd PyStrix-Editor
+cd PyStrixx
 ```
 
 ### 2. Configure the backend
@@ -188,6 +201,7 @@ Create a `.env` file in the backend directory and configure your API key:
 
 ```env
 GROQ_API_KEY=your_groq_api_key
+AI_MODEL=openai/gpt-oss-20b
 ```
 
 > Keep secrets in environment variables. Never commit your `.env` file or expose API keys in frontend code.
@@ -239,6 +253,7 @@ The project has been tested across core editor and AI workflows, including:
 - Responsive/mobile interaction
 
 Testing reflects the development validation performed on the project; it is not a formal third-party QA or security certification.
+- All the test cases are mentioned on testCases_v1.txt and testCases_v2.txt
 
 ---
 
@@ -273,7 +288,7 @@ PyStrix was developed to explore the practical integration of a browser-based co
 
 **Aryan Bharadwaj**
 
-- GitHub: [Aryan-018008](https://github.com/Aryan-018008)
+- GitHub: https://github.com/Aryan-018008
 
 ---
 
