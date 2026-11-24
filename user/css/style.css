@@ -2032,3 +2032,304 @@ summary:focus-visible {
     }
 
 }
+
+/* =============================================
+   PYSTRIX AI MARKDOWN RENDERING
+   ============================================= */
+
+.ai-message.ai .ai-message-content {
+
+    line-height: 1.75;
+    overflow-wrap: anywhere;
+
+}
+
+
+/* Headings */
+
+.ai-message.ai .ai-message-content h1,
+.ai-message.ai .ai-message-content h2,
+.ai-message.ai .ai-message-content h3,
+.ai-message.ai .ai-message-content h4 {
+
+    margin: 14px 0 8px;
+    color: #f1f5f9;
+    line-height: 1.4;
+
+}
+
+.ai-message.ai .ai-message-content h1 {
+    font-size: 19px;
+}
+
+.ai-message.ai .ai-message-content h2 {
+    font-size: 17px;
+}
+
+.ai-message.ai .ai-message-content h3 {
+    font-size: 15px;
+}
+
+.ai-message.ai .ai-message-content h4 {
+    font-size: 14px;
+}
+
+
+/* Paragraphs */
+
+.ai-message.ai .ai-message-content p {
+
+    margin: 8px 0;
+
+}
+
+
+/* Lists */
+
+.ai-message.ai .ai-message-content ul,
+.ai-message.ai .ai-message-content ol {
+
+    padding-left: 22px;
+    margin: 8px 0;
+
+}
+
+.ai-message.ai .ai-message-content li {
+
+    margin: 5px 0;
+
+}
+
+
+/* Bold */
+
+.ai-message.ai .ai-message-content strong {
+
+    color: #ffffff;
+    font-weight: 700;
+
+}
+
+
+/* Inline code */
+
+.ai-message.ai .ai-message-content code {
+
+    font-family: var(--font-code);
+    font-size: 0.9em;
+
+    background: #161d2a;
+    color: #93c5fd;
+
+    padding: 3px 6px;
+    border-radius: 5px;
+
+}
+
+
+/* Code blocks */
+
+.ai-message.ai .ai-message-content pre {
+
+    margin: 12px 0;
+
+    padding: 14px;
+
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 8px;
+
+    overflow-x: auto;
+
+}
+
+.ai-message.ai .ai-message-content pre code {
+
+    display: block;
+
+    padding: 0;
+
+    background: transparent;
+    border: none;
+
+    color: #e5e7eb;
+
+    font-size: 12px;
+    line-height: 1.7;
+
+    white-space: pre;
+
+}
+
+
+/* Blockquotes */
+
+.ai-message.ai .ai-message-content blockquote {
+
+    margin: 10px 0;
+
+    padding: 8px 12px;
+
+    border-left: 3px solid #60a5fa;
+
+    background: #1b2637;
+
+    color: #cbd5e1;
+
+}
+
+
+/* Horizontal lines */
+
+.ai-message.ai .ai-message-content hr {
+
+    border: none;
+    border-top: 1px solid #374151;
+
+    margin: 14px 0;
+
+}
+
+
+/* Tables */
+
+.ai-message.ai .ai-message-content table {
+
+    display: block;
+    width: 100%;
+
+    overflow-x: auto;
+
+    border-collapse: collapse;
+    margin: 12px 0;
+
+}
+
+.ai-message.ai .ai-message-content th,
+.ai-message.ai .ai-message-content td {
+
+    border: 1px solid #374151;
+
+    padding: 8px 10px;
+
+    text-align: left;
+
+}
+
+.ai-message.ai .ai-message-content th {
+
+    background: #303b4e;
+    color: #f1f5f9;
+
+}
+
+
+/* Links */
+
+.ai-message.ai .ai-message-content a {
+
+    color: #60a5fa;
+    text-decoration: underline;
+
+}
+
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+    .ai-message.ai .ai-message-content pre {
+
+        padding: 10px;
+        font-size: 11px;
+
+    }
+
+    .ai-message.ai .ai-message-content h1 {
+        font-size: 17px;
+    }
+
+    .ai-message.ai .ai-message-content h2 {
+        font-size: 16px;
+    }
+
+}
+
+/* =============================================
+   AI CODE BLOCK COPY BUTTON
+   ============================================= */
+
+.ai-message.ai .ai-message-content pre {
+
+    position: relative;
+
+    padding-top: 48px;
+
+}
+
+
+.ai-code-copy-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 6px;
+    background: #263449;
+    color: #cbd5e1;
+    border: 1px solid #475569;
+    border-radius: 4px;
+    font-size: 8px;
+    font-family: var(--font-main);
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+
+.ai-code-copy-btn:hover {
+
+    background: #34465f;
+    color: white;
+
+}
+
+
+.ai-code-copy-btn.copied {
+
+    background: #14532d;
+    border-color: #22c55e;
+    color: #bbf7d0;
+
+}
+
+
+.ai-code-copy-btn i {
+
+    font-size: 10px;
+
+}
+
+
+@media (max-width: 768px) {
+
+    .ai-code-copy-btn {
+
+        padding: 6px 8px;
+        font-size: 9px;
+
+    }
+
+}
+
+.ai-message.ai .ai-message-content pre {
+    max-width: 100%;
+    overflow-x: auto;
+    box-sizing: border-box;
+}
+
+.ai-message.ai .ai-message-content pre code {
+    display: block;
+    white-space: pre;
+    min-width: max-content;
+}

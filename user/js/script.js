@@ -304,9 +304,11 @@ const terminalInput = document.getElementById("terminalInput");
 
 const outputContent = document.getElementById("outputContent");
 
-// const API_BASE_URL = "https://pystrix-editor-018.onrender.com";
+//Deployment
+const API_BASE_URL = "https://pystrix-editor-018.onrender.com";
 
-const API_BASE_URL = "http://127.0.0.1:5000";
+//local
+// const API_BASE_URL = "http://127.0.0.1:5000";
 
 
 let activeSessionId = null;
@@ -1026,6 +1028,84 @@ const sendAiMessage = document.getElementById("sendAiMessage");
 let currentAiMode = "ask";
 let aiIsLoading = false;
 
+// Render AI Markdown safely
+
+function renderAiMarkdown(content) {
+
+    if (
+        typeof marked === "undefined" ||
+        typeof DOMPurify === "undefined"
+    ) {
+        return content;
+    }
+
+    const html = marked.parse(content);
+
+    return DOMPurify.sanitize(html);
+
+}
+
+
+function addCopyButtonsToCodeBlocks(container) {
+
+    const codeBlocks = container.querySelectorAll("pre");
+
+    codeBlocks.forEach((pre) => {
+
+        if (pre.querySelector(".ai-code-copy-btn")) {
+            return;
+        }
+
+        const code = pre.querySelector("code");
+
+        if (!code) return;
+
+        const button = document.createElement("button");
+
+        button.className = "ai-code-copy-btn";
+        button.innerHTML = `
+            <i class="fa-regular fa-copy"></i>
+            Copy
+        `;
+
+        button.addEventListener("click", async () => {
+
+            try {
+
+                await navigator.clipboard.writeText(code.textContent);
+
+                button.innerHTML = `
+                    <i class="fa-solid fa-check"></i>
+                    Copied!
+                `;
+
+                button.classList.add("copied");
+
+                setTimeout(() => {
+
+                    button.innerHTML = `
+                        <i class="fa-regular fa-copy"></i>
+                        Copy Code
+                    `;
+
+                    button.classList.remove("copied");
+
+                }, 2000);
+
+            } catch (error) {
+
+                showError("Unable to copy code.");
+
+            }
+
+        });
+
+        pre.appendChild(button);
+
+    });
+
+}
+
 
 // Add message to chat
 
@@ -1038,7 +1118,16 @@ function addAiMessage(content, type = "ai") {
     const messageContent = document.createElement("div");
 
     messageContent.className = "ai-message-content";
-    messageContent.textContent = content;
+
+    if (type === "ai") {
+
+        messageContent.innerHTML = renderAiMarkdown(content);
+
+    } else {
+
+        messageContent.textContent = content;
+
+    }
 
     messageDiv.appendChild(messageContent);
 
@@ -1047,8 +1136,8 @@ function addAiMessage(content, type = "ai") {
     aiChatContainer.scrollTop = aiChatContainer.scrollHeight;
 
     return messageDiv;
-}
 
+}
 
 // Send message to backend
 
@@ -1125,6 +1214,8 @@ async function sendMessageToAI(message, mode = "ask") {
         const aiMessage = addAiMessage("", "ai");
         const contentElement = aiMessage.querySelector(".ai-message-content");
 
+        let aiRawContent = "";
+
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
 
@@ -1167,8 +1258,11 @@ async function sendMessageToAI(message, mode = "ask") {
 
                 if (parsed.error) {
 
-                    contentElement.textContent +=
-                        "\n\n" + parsed.error;
+                    aiRawContent += "\n\n" + parsed.error;
+
+                    contentElement.innerHTML =
+                    renderAiMarkdown(aiRawContent);
+                    addCopyButtonsToCodeBlocks(contentElement);
 
                     finished = true;
                     break;
@@ -1176,7 +1270,10 @@ async function sendMessageToAI(message, mode = "ask") {
 
                 if (parsed.chunk) {
 
-                    contentElement.textContent += parsed.chunk;
+                    aiRawContent += parsed.chunk ;
+                    contentElement.innerHTML = renderAiMarkdown(aiRawContent);
+
+                    addCopyButtonsToCodeBlocks(contentElement);
 
                     aiChatContainer.scrollTop =
                         aiChatContainer.scrollHeight;
