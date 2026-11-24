@@ -1,258 +1,282 @@
-# PyStrix — Online Python Playground
+# PyStrix — Online Python Coding Environment
 
-> **Code. Compete. Conquer.**
+<p align="center">
+  <strong>Code. Compete. Conquer.</strong><br/>
+  A lightweight, browser-based Python editor with an integrated AI coding assistant.
+</p>
 
-PyStrix is a lightweight, web-based Python coding playground designed to let users write, execute, and test Python code directly in their browser. With a clean developer-focused interface, interactive terminal, customizable editor, and responsive design, PyStrix provides a simple environment for practicing Python without installing anything locally.
-
----
-
-## 🚀 Live Demo
-
-- **Frontend:** https://pystrix-editor-008.onrender.com
-- **Backend API:** https://pystrix-editor-018.onrender.com
-
----
-
-## ✨ Features
-
-### 🧑‍💻 Python Code Editor
-- Write Python code directly in the browser.
-- Syntax highlighting powered by CodeMirror.
-- Line numbers and bracket matching.
-- Customizable editor font size.
-- Text style customization.
-- Dark and light editor themes.
-
-### ▶️ Code Execution
-- Execute Python code using the Run button.
-- Live terminal output.
-- Interactive input support for programs using `input()`.
-- Execution time display.
-- Execution status indicator.
-- Stop running programs.
-- Clear and copy output.
-
-### 🎨 Editor Customization
-- Dark and light editor themes.
-- Font size adjustment.
-- Text style customization.
-- Resizable editor and output panels.
-
-### 📱 Responsive Interface
-- Mobile-responsive layout.
-- Separate editor and output views on mobile.
-- Responsive navigation and workspace.
-
-### ⚡ Productivity Features
-- Keyboard shortcut to run code: `Ctrl + Enter` / `Cmd + Enter`.
-- Share code using native sharing capabilities where supported.
-- Toast notifications using SweetAlert2.
-- Editor settings reset.
-
-### 📚 Python Handbook
-An integrated Python learning handbook covering Python concepts and programming fundamentals.
-
-### 💬 Feedback System
-A feedback interface that allows users to submit suggestions, ratings, and feedback about PyStrix.
+<p align="center">
+  <a href="https://pystrix-editor-008.onrender.com">Live Application</a> ·
+  <a href="https://github.com/Aryan-018008/PyStrix-Editor">Source Code</a>
+</p>
 
 ---
 
-## 🛠️ Tech Stack
+## Overview
 
-### Frontend
-- HTML5
-- CSS3
-- JavaScript
-- Tailwind CSS (where integrated)
-- CodeMirror
-- SweetAlert2
-- Font Awesome
+**PyStrix** is a browser-based Python coding environment designed to make writing, executing, debugging, and understanding Python code accessible through a clean, responsive interface.
 
-### Backend
-- Python
-- Flask
-- Flask-CORS
-- Gunicorn
+The platform combines a focused code editor and interactive execution console with an AI-assisted workflow. Users can write Python programs, run code, provide standard input, inspect execution results, and ask an AI assistant to explain code or help diagnose and improve it.
 
-### Database
-- SQLite
+The project is built using a lightweight web stack and is deployed as separate frontend and backend services.
 
-### Deployment
-- Render
+## Key Capabilities
+
+### Python Editor & Execution
+- Code editing powered by **CodeMirror**
+- Execute Python code directly from the browser
+- Stop running execution when needed
+- Interactive standard input (`stdin`) support
+- Terminal-style output and error display
+- Execution status and elapsed-time feedback
+- Editor and output panel resizing
+- Keyboard shortcuts for common actions
+
+### Editor Experience
+- Editor themes and configurable settings
+- Responsive layout for desktop and mobile
+- Mobile editor/output navigation
+- Clean workspace focused on coding
+- Code sharing support
+
+### AI Coding Assistant
+The integrated AI assistant provides contextual coding support through four modes:
+
+| Mode | Purpose |
+|---|---|
+| **Ask** | Ask programming questions and get contextual answers |
+| **Explain Code** | Understand the logic, structure, and behavior of code |
+| **Fix Error** | Get assistance analyzing runtime errors and tracebacks |
+| **Fix Code** | Request suggestions to improve or correct code |
+
+Additional assistant capabilities:
+- Context-aware prompts using editor code
+- Error and traceback context where applicable
+- Streaming responses for progressive output
+- Markdown-formatted responses
+- Sanitized Markdown rendering
+- Copy code snippets directly from AI responses
 
 ---
 
-## 📁 Project Structure
+## Architecture
+
+PyStrix uses a frontend–backend architecture with independently deployed services.
 
 ```text
-PyStrix/
+┌─────────────────────────────────────┐
+│             Web Client              │
+│                                     │
+│ HTML · CSS · JavaScript             │
+│ CodeMirror · Markdown UI             │
+└──────────────────┬──────────────────┘
+                   │ HTTP / SSE
+                   ▼
+┌─────────────────────────────────────┐
+│           Flask Backend             │
+│                                     │
+│ Python Execution · AI API            │
+│ Request Processing · CORS             │
+└──────────────────┬──────────────────┘
+                   │
+          ┌────────┴─────────┐
+          ▼                  ▼
+┌──────────────────┐ ┌──────────────────┐
+│ Python Execution │ │  Groq AI Service  │
+│     Service      │ │  AI Responses     │
+└──────────────────┘ └──────────────────┘
+```
+
+## Technology Stack
+
+### Frontend
+- **HTML5** — application structure
+- **CSS3** — responsive UI and styling
+- **JavaScript** — client-side logic and API communication
+- **CodeMirror** — code editor
+- **Marked** — Markdown rendering
+- **DOMPurify** — sanitization of rendered HTML
+- **SweetAlert2** — user-facing dialogs
+- **Font Awesome** — icons
+
+### Backend
+- **Python**
+- **Flask** — web framework and API
+- **Flask-CORS** — cross-origin communication
+- **Groq API** — AI-assisted programming features
+- **Server-Sent Events (SSE)** — streamed AI responses
+- **Gunicorn** — production application server
+
+### Deployment
+- **Render** — deployment and hosting
+- **GitHub** — source control and version management
+
+---
+
+## Project Structure
+
+```text
+PyStrix-Editor/
 │
-├── user/
+├── user/                         # Frontend application
 │   ├── index.html
-│   ├── documentation.html
-│   ├── feedback.html
-│   │
-│   ├── css/
-│   │   └── style.css
-│   │
-│   ├── js/
-│   │   └── script.js
-│   │
-│   └── assets/
+│   ├── style.css
+│   └── script.js
 │
-├── server/
+├── server/                       # Backend application
 │   ├── app.py
-│   ├── config.py
 │   ├── requirements.txt
-│   │
-│   ├── routes/
-│   │   ├── execution.py
-│   │   └── feedback.py
-│   │
-│   ├── service/
-│   │   └── execution_service.py
-│   │
-│   └── database/
-│       ├── db.py
-│       └── pystrix.db
+│   └── ...                       # Backend modules and configuration
 │
-├── .gitignore
 └── README.md
 ```
 
+> The structure above represents the primary project layout; supporting backend files may vary as the implementation evolves.
+
+## Application Workflow
+
+1. The user writes Python code in the browser-based editor.
+2. The frontend sends execution requests to the backend.
+3. The backend processes the request and executes the Python code.
+4. Output, errors, and input prompts are returned to the frontend.
+5. For AI assistance, the client sends the selected mode, prompt, and relevant code context.
+6. The backend communicates with the Groq API.
+7. AI responses are streamed to the client and rendered in the assistant panel.
+
 ---
 
-## ⚙️ Getting Started
+## Live Deployment
 
-Follow these steps to run PyStrix locally.
+| Component | URL |
+|---|---|
+| **Frontend** | https://pystrix-editor-008.onrender.com |
+| **Backend** | https://pystrix-editor-018.onrender.com |
+| **GitHub Repository** | https://github.com/Aryan-018008/PyStrix-Editor |
 
-### 1. Clone the Repository
+---
+
+## Local Development
+
+### Prerequisites
+
+- Python 3.x
+- Git
+- A Groq API key for AI features
+
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/Aryan-018008/PyStrix-Editor.git
 cd PyStrix-Editor
 ```
 
-### 2. Create a Virtual Environment
+### 2. Configure the backend
 
-```bash
-python -m venv venv
-```
-
-### 3. Activate the Virtual Environment
-
-**Windows:**
-
-```powershell
-venv\Scripts\activate
-```
-
-### 4. Install Dependencies
-
-```bash
-python -m pip install -r requirements.txt
-```
-
-### 5. Configure the Backend
-
-Navigate to the backend folder:
+Navigate to the backend directory:
 
 ```bash
 cd server
 ```
 
-Ensure your configuration is properly set in `config.py` and any required environment variables are configured.
+Install dependencies:
 
-### 6. Start the Flask Backend
+```bash
+pip install -r requirements.txt
+```
+
+Create a `.env` file in the backend directory and configure your API key:
+
+```env
+GROQ_API_KEY=your_groq_api_key
+```
+
+> Keep secrets in environment variables. Never commit your `.env` file or expose API keys in frontend code.
+
+### 3. Run the backend
+
+Start the Flask application using the project's configured entry point. For example, if the application entry point is `app.py`:
 
 ```bash
 python app.py
 ```
 
-The backend will run at:
+### 4. Run the frontend
 
-```text
-http://127.0.0.1:5000
-```
+Open the frontend `index.html` in a browser or use a local static web server, depending on the configured API URL and browser requirements.
 
-### 7. Launch the Frontend
-
-Open the frontend's `index.html` using a local development server, such as the Live Server extension in Visual Studio Code.
-
-The frontend and backend must be accessible to each other, and the backend CORS configuration must allow the frontend origin.
+> For local development, ensure the frontend API configuration points to your local backend instance rather than the production endpoint.
 
 ---
 
-## 🔌 API Endpoints
+## Deployment Notes
 
-### Code Execution
+PyStrix is deployed using separate frontend and backend services.
 
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/api/start` | Start Python code execution |
-| GET | `/api/output/<session_id>` | Retrieve execution output |
-| POST | `/api/input/<session_id>` | Send input to a running program |
-| POST | `/api/stop/<session_id>` | Stop an active execution session |
-
-### Health Check
-
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/health` | Check backend availability |
-
-### Feedback
-
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/api/feedback` | Submit user feedback |
+- Configure the backend environment variables in the hosting dashboard.
+- Set the frontend API base URL to the deployed backend URL.
+- Configure CORS to allow the deployed frontend origin.
+- Use the production application server configured for the backend deployment.
+- Do not place API secrets in the frontend or public repository.
 
 ---
 
-## 🎯 Project Goals
+## Testing & Validation
 
-PyStrix aims to make Python programming accessible and convenient by providing:
+The project has been tested across core editor and AI workflows, including:
 
-- A simple coding environment.
-- Quick Python execution.
-- Interactive terminal functionality.
-- A beginner-friendly interface.
-- Responsive usability across devices.
-- A foundation for future AI-powered programming assistance.
+- Python code execution
+- Interactive input handling
+- Run and stop controls
+- AI Ask workflow
+- Code explanation
+- Error assistance
+- Code improvement requests
+- Streaming response behavior
+- Empty prompt handling
+- API and network error handling
+- Long code input
+- Repeated AI requests
+- Responsive/mobile interaction
 
----
-
-## 🔮 Future Enhancements
-
-- AI-powered coding assistant.
-- AI error detection and debugging.
-- AI code explanations.
-- AI-generated code fixes.
-- Code optimization suggestions.
-- Automated test-case generation.
-- Enhanced coding productivity tools.
+Testing reflects the development validation performed on the project; it is not a formal third-party QA or security certification.
 
 ---
 
-## ⚠️ Security Notice
+## Security Considerations
 
-PyStrix executes user-submitted Python code on its backend. Running arbitrary code on a publicly accessible server requires appropriate sandboxing and security protections.
+- AI API credentials are maintained on the backend.
+- Markdown output is sanitized before rendering.
+- Frontend and backend communication is configured through API endpoints.
+- CORS is configured to permit the intended client origin.
 
-The current version is a project-level implementation and should not be considered a hardened production execution environment for untrusted code.
+> **Note:** Python execution environments require additional isolation and resource controls before being used for untrusted code at production scale. PyStrix is a learning and portfolio project and should not be considered a hardened multi-tenant execution platform.
 
 ---
 
-## 👨‍💻 Developer
+## Roadmap
+
+Potential future improvements include:
+
+- Improved execution isolation and resource limits
+- Expanded test coverage and automated testing
+- Additional editor customization
+- More AI-assisted learning workflows
+- Enhanced code-sharing and collaboration features
+
+---
+
+## Project Purpose
+
+PyStrix was developed to explore the practical integration of a browser-based coding interface, backend code execution, interactive input/output, and AI-assisted programming workflows using a lightweight full-stack architecture.
+
+## Author
 
 **Aryan Bharadwaj**
 
-GitHub: (https://github.com/Aryan-018008)
+- GitHub: [Aryan-018008](https://github.com/Aryan-018008)
 
 ---
 
-## 📄 License
-
-This project is currently available as a personal project. A formal license may be added in the future.
-
----
-
-> **PyStrix — Code. Compete. Conquer.**
+<p align="center">
+  <sub>PyStrix — Code. Compete. Conquer.</sub>
+</p>
