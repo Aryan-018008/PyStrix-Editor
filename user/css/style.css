@@ -1984,3 +1984,51 @@ summary:focus-visible {
     }
 
 }
+
+/* =============================================
+   MOBILE EDITOR IMPROVEMENT
+   ============================================= */
+
+@media (max-width: 400px) {
+
+    /* Give editor toolbar more breathing room */
+    .editor-toolbar {
+        min-width: 0;
+        gap: 3px;
+    }
+
+    .file-tab {
+        min-width: 0;
+        flex-shrink: 1;
+        overflow: hidden;
+    }
+
+    .editor-controls {
+        flex-shrink: 0;
+        gap: 3px;
+    }
+
+    .toolbar-btn {
+        padding: 0 5px;
+    }
+
+    .run-btn {
+        padding: 0 8px;
+    }
+
+    .appearance-toggle {
+        padding: 0 5px;
+    }
+
+    /* Prevent editor container width overflow */
+    .code-editor-container {
+        min-width: 0;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .CodeMirror {
+        max-width: 100%;
+    }
+
+}

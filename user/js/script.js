@@ -81,7 +81,8 @@ if (editorElement && typeof CodeMirror !== "undefined") {
         theme: "material-darker",
         lineNumbers: true,
         styleActiveLine: true,
-        lineWrapping: false,
+        // lineWrapping: false,
+        lineWrapping: true,
         indentUnit: 4,
         tabSize: 4,
         indentWithTabs: false,
@@ -313,6 +314,8 @@ let terminalBuffer = "";
 let inputPending = false;
 let executionFinished = true;
 let inputSubmitting = false;
+let lastExecutionError = "";
+let lastExecutedCode = "";
 
 
 /* =============================================
@@ -550,6 +553,10 @@ async function pollTerminalOutput(sessionId) {
 
                 const success = result.exit_code === 0;
 
+                if (!success) {
+                 lastExecutionError = terminalBuffer;
+                }
+
                 if (outputStatus) {
                     outputStatus.textContent =
                         success ? "Completed" : "Failed";
@@ -625,6 +632,9 @@ if (runBtn && editor) {
         }
 
         resetTerminal();
+        lastExecutionError = "";
+        lastExecutedCode = code;
+
         setRunButtonRunning(true);
 
         if (outputStatus) {
@@ -1066,6 +1076,11 @@ async function sendMessageToAI(message, mode = "ask") {
     try {
 
         const code = editor ? editor.getValue() : "";
+        const errorContext =
+         mode === "debug" && code === lastExecutedCode
+         ? lastExecutionError
+         : "";
+
 
         const response = await fetch(`${API_BASE_URL}/api/ai`, {
 
@@ -1078,7 +1093,7 @@ async function sendMessageToAI(message, mode = "ask") {
             body: JSON.stringify({
                 message: message,
                 code: code,
-                error: "",
+                error: errorContext,
                 mode: mode
             })
 
