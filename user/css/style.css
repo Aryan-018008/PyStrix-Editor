@@ -2256,70 +2256,63 @@ summary:focus-visible {
 }
 
 /* =============================================
-   AI CODE BLOCK COPY BUTTON
+   AI CODE BLOCK COPY BUTTON - CLEAN VERSION
    ============================================= */
 
 .ai-message.ai .ai-message-content pre {
-
     position: relative;
-
     padding-top: 48px;
-
 }
 
-
-.ai-code-copy-btn {
+.ai-message.ai .ai-message-content pre button.ai-code-copy-btn {
+    all: unset;
     position: absolute;
     top: 6px;
     right: 6px;
-    display: flex;
+
+    display: inline-flex;
     align-items: center;
-    gap: 4px;
-    padding: 3px 6px;
+    justify-content: center;
+    gap: 3px;
+
+    box-sizing: border-box;
+    padding: 2px 4px;
+
     background: #263449;
     color: #cbd5e1;
+
     border: 1px solid #475569;
     border-radius: 4px;
-    font-size: 8px;
+
     font-family: var(--font-main);
-    transition: 0.2s;
+    font-size: 8px;
+    line-height: 1.2;
+    font-weight: 400;
+
     cursor: pointer;
+    transition: 0.2s;
 }
 
+.ai-message.ai .ai-message-content pre button.ai-code-copy-btn i {
+    font-size: 8px;
+}
 
-.ai-code-copy-btn:hover {
-
+.ai-message.ai .ai-message-content pre button.ai-code-copy-btn:hover {
     background: #34465f;
     color: white;
-
 }
 
-
-.ai-code-copy-btn.copied {
-
+.ai-message.ai .ai-message-content pre button.ai-code-copy-btn.copied {
     background: #14532d;
     border-color: #22c55e;
     color: #bbf7d0;
-
 }
-
-
-.ai-code-copy-btn i {
-
-    font-size: 10px;
-
-}
-
 
 @media (max-width: 768px) {
-
-    .ai-code-copy-btn {
-
-        padding: 6px 8px;
-        font-size: 9px;
-
+    .ai-message.ai .ai-message-content pre button.ai-code-copy-btn {
+        padding: 2px 4px;
+        font-size: 8px;
     }
-
 }
 
 .ai-message.ai .ai-message-content pre {
